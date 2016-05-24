@@ -1,0 +1,69 @@
+<html>
+<%- include ../partials/head.ejs %>
+<body>
+<div class="container">
+    <%- include menu.ejs %>
+    <div class="row well" style="margin-top: 8px;">
+        <% if (typeof error !== 'undefined') { %>
+        <div class="col-sm-12">
+            <div class="label label-danger">
+                <%- error.message %>
+            </div>
+        </div>
+        <% } %>
+        <div class="col-sm-12">
+            <form method="post" action="/admin/coverPhoto" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>Photo</label>
+                    <input class="form-control" type="file" name="photo">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary pull-right">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--新增結束-->
+    <!--修改開始-->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-3">Photo</div>
+                <div class="col-sm-2">Action</div>
+            </div>
+            <% coverPhotos.forEach(function(coverPhoto) { %>
+            <div class="row">
+                <form action="/admin/coverPhoto/<%- coverPhoto.id %>" method="post" enctype="multipart/form-data">
+                    <div class="col-sm-3">
+                        <img src="/photo/<%- coverPhoto.id %>" style="width: 100%; height: 100px;">
+                        <input type="file" name="photo">
+                    </div>
+                    <div class="col-sm-2 clearfix">
+                        <button class="btn btn-default pull-right">Update</button>
+                    </div>
+                </form>
+                <form class="delform" action="/admin/coverPhoto/delete/<%- coverPhoto.id %>" method="post">
+                    <div class="col-sm-1 clearfix">
+                        <button class="btn btn-danger pull-right">Del</button>
+                    </div>
+                </form>
+            </div>
+            <% }) %>
+
+        </div>
+    </div>
+    <!--修改結束-->
+</div>
+<script>
+    $(document).ready(function () {
+        var delform = $('.delform');
+
+        delform.submit(function () {
+            if (!confirm('Are You Sure?')) {
+                return false;
+            }
+        });
+    })
+</script>
+</body>
+</html>

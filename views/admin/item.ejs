@@ -1,0 +1,141 @@
+<html>
+<%- include ../partials/head.ejs %>
+<body>
+<div class="container">
+    <%- include menu.ejs %>
+    <div class="row well" style="margin-top: 8px;">
+        <% if (typeof error !== 'undefined') { %>
+        <div class="col-sm-12">
+            <div class="label label-danger">
+                <%- error.message %>
+            </div>
+        </div>
+        <% } %>
+        <div class="col-sm-12">
+            <form method="post" action="/admin/item" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>種類</label>
+                    <select class="form-control" name="type">　
+                        <option>特餐</option>
+                        <option>飯類</option>
+                        <option>麵食</option>
+                        <option>水餃</option>
+                        <option>炸物</option>
+                        <option>湯類</option>
+                        <option>飲料</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>名稱</label>
+                    <input class="form-control" type="text" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label>價錢(大份)</label>
+                    <input class="form-control" type="number" name="priceBig" required>
+                </div>
+                <div class="form-group">
+                    <label>價錢(小份)</label>
+                    <input class="form-control" type="number" name="priceSmall" required>
+                </div>
+                <div class="form-group">
+                    <label>Photo</label>
+                    <input class="form-control" type="file" name="photo">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary pull-right">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <form id="actionForm" method="post" enctype="multipart/form-data">
+            <table class="table table-bordered table-condensed table-striped">
+                <thead>
+                <tr>
+                    <th>Photo</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% items.forEach(function(item) { %>
+                <tr>
+                    <td width="200px">
+                        <% if(item.photo) { %>
+                        <img src="/photo/<%- item.photo %>" style="width: 100%; max-height: 100px;">
+                        <% } else { %>
+                        <img src="/img/default.jpg" style="width: 100%; max-height: 100px;">
+                        <% } %>
+                        <input type="file" name="photo">
+                    </td>
+                    <td>
+                        <select class="form-control" name="type">　
+                            <option selected><%- item.type %></option>
+                            <option>特餐</option>
+                            <option>飯類</option>
+                            <option>麵食</option>
+                            <option>水餃</option>
+                            <option>炸物</option>
+                            <option>湯類</option>
+                            <option>飲料</option>
+                        </select>
+
+                    </td>
+                    <td>
+                        <input type="text" name="name" class="form-control" value="<%- item.name %>" required>
+                    </td>
+                    <td>
+                        <div class="form-group form-inline">
+                            <label>Big</label>
+                            <input type="number" name="priceBig" class="form-control" value="<%- item.price.big %>"
+                                   required>
+                        </div>
+                        <div class="form-group form-inline">
+                            <label>Small</label>
+                            <input type="number" name="priceSmall" class="form-control"
+                                   value="<%- item.price.small %>" required>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <button class="btn btn-default update" type="button" data-id="<%- item.id %>">
+                                UPDATE
+                            </button>
+                            <button class="btn btn-danger delete" type="button" data-id="<%- item.id %>">
+                                DELETE
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <% }) %>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var actionForm = $('#actionForm');
+        var deleteBtn = $('.btn.delete');
+        var updateBtn = $('.btn.update');
+
+        deleteBtn.click(function () {
+            if (!confirm("are you sure?")) {
+                return false;
+            }
+
+            actionForm.attr('action', '/admin/item/delete/' + $(this).attr('data-id'));
+            actionForm.removeAttr('enctype');
+            actionForm.submit();
+        });
+
+        updateBtn.click(function () {
+            actionForm.attr('action', '/admin/item/update/' + $(this).attr('data-id'));
+            actionForm.attr('enctype', 'multipart/form-data');
+            actionForm.submit();
+        });
+    });
+</script>
+</body>
+</html>

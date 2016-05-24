@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<%- include partials/head.ejs %>
+<style>
+    body {
+        background-color: #34314c;
+    }
+    #Footer{
+        margin-top:10px;
+    }
+</style>
+<body>
+<div class="container-fluid">
+
+    <div id="head">
+        <div class="jumbotron" style="margin-bottom:10px;margin-top:5px;padding-top: 15px;
+    padding-bottom: 15px;">
+            <%- include partials/welcome.ejs %><!--歡迎光臨某某某-->
+        </div>
+    </div>
+    <div id="main">
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            <% coverPhotos.forEach(function(coverPhoto) { %>
+
+            <% }) %>
+            <ol class="carousel-indicators">
+                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                <% coverPhotos.forEach(function(coverPhoto) { %>
+                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                <% }) %>
+            </ol>
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" role="listbox">
+                <div class="item active">
+                    <img src="/img/awang.png" style="width: 100%; height: 100%;">
+                    <div class="carousel-caption">
+                        123
+                    </div>
+                </div>
+                <% coverPhotos.forEach(function(coverPhoto) { %>
+                <div class="item ">
+                    <img src="/photo/<%- coverPhoto.id %>" style="width: 100%; height: 100%;">
+                    <div class="carousel-caption">
+                        <h3><%- coverPhoto.say %></h3>
+                        <p><%- coverPhoto.say %></p>
+                    </div>
+                </div>
+                <% }) %>
+            </div>
+
+            <!-- Controls -->
+            <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">上一張</span>
+            </a>
+            <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">下一張</span>
+            </a>
+        </div>
+    </div>
+    <div id="Footer">
+        <div class="row">
+            <div class="btn-group btn-group-justified btn-group-lg">
+                <% if(typeof user !== 'undefined') { %>
+                <a href="/order" class="btn btn-warning">Order</a>
+                <a href="/query" class="btn btn-default">Query</a>
+                <% }else{ %>
+                <a href="/user/login" class="btn btn-primary">Login</a>
+                <a href="/user/register" class="btn btn-info">Register</a>
+                <a href="/admin" class="btn btn-danger">Admin</a>
+                <% }%>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
+

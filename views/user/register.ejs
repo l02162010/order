@@ -1,0 +1,152 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css">
+    <link rel='stylesheet' href='/css/reg.css'/>
+
+    <script src="/jquery/dist/jquery.min.js"></script>
+    <script src="/bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="panel panel-default">
+            <% if (typeof error !== 'undefined') { %>
+            <div class="panel-body">
+                <div class="label label-danger">
+                    <%- error.message %>
+                </div>
+            </div>
+            <% } %>
+            <div class="panel-body" id="Box">
+                <form action="/user/register" method="post">
+                    <div class="form-group">
+                        <label>account</label>
+                        <input class="form-control" type="text" name="account" id="account">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input class="form-control " type="password" name="password" id="password">
+                    </div>
+                    <div class="form-group ">
+                        <span id="noVia" class="label label-danger " style="display: none;">驗證錯誤</span>
+                        <span id="viaing" class="label label-warning " style="display: none;">驗證中...</span>
+                        <span id="goodNum" class="label label-success " style="display: none;">驗證成功</span>
+                    </div>
+                    <div class="form-group ">
+                        <input type="button" id="vieClick" class="btn btn-success " value="驗證">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input class="form-control" id="phone" type="text" name="phone" readonly="readonly">
+                    </div>
+                    <div class="form-group ">
+                        <span id="phonenoVia" class="label label-danger " style="display: none;">手機驗證錯誤</span>
+                        <span id="phonegoodNum" class="label label-success " style="display: none;">手機驗證成功</span>
+                    </div>
+                    <div class="form-group ">
+                        <input type="button" id="phoneClick" class="btn btn-warning " value="手機驗證" disabled="disabled">
+                    </div>
+                    <div class="form-group">
+                        <label>Your Name</label>
+                        <input class="form-control" id="displayName" type="text" name="displayName" readonly="readonly">
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-default" style="font-weight: bolder;" id="register" value="註冊" disabled="disabled">
+                    </div>
+                    <div class="form-group">
+                        <a href="/" class="btn btn-primary pull-right" >回首頁</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<script>
+    $(document).ready(function () {
+
+
+        var vieClick = $('#vieClick');//按按鈕
+        var account = $('#account');//帳號表單
+        var password = $('#password');//密碼表單
+        var phone = $('#phone');//手機表單
+        var phoneCilck = $('#phoneClick');
+        var displayName = $('#displayName');//顯示名稱
+        var registerBtn = $('#register');//註冊按鈕
+        var noVia = $('#noVia'); //驗證錯誤
+        var viaing = $('#viaing'); //驗證中
+        var goodNum = $('#goodNum'); //驗證成功
+        var phonenoVia = $('#phonenoVia'); //手機驗證錯誤
+        var phonegoodNum = $('#phonegoodNum'); //手機驗證成功
+
+
+        vieClick.click(function () {
+
+            var accountFile = $('#account').val();
+            var passwordFile = $('#password').val();
+
+            viaing.show(); //出現驗證中
+            noVia.hide();//隱藏錯誤
+            goodNum.hide();//隱藏成功
+
+            $.ajax('/user/register/stu', {
+                method: 'POST',
+                data: {account: accountFile, password: passwordFile},
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(error);
+                },
+                success: function (result) { //這result只是拿到結果有可能是True也可以是false
+
+                    if (result.success) { //如果沒通過驗證，就不會再驗證名字
+
+                        goodNum.show();//顯示成功
+                        viaing.hide();//隱藏驗證中
+                        noVia.hide();//隱藏錯誤
+                        phone.removeAttr('readonly');//可以填寫手機
+                        phoneCilck.removeAttr('disabled');//可以按手機驗證
+                        account.attr('readonly','readonly');//把帳密鎖起來
+                        password.attr('readonly','readonly');//把帳密鎖起來
+
+
+                        phoneCilck.click(function () {
+                            var pv = phone.val();
+                            if (pv.length < 9 || pv.length > 10){
+                                phonenoVia.show();
+                                phonegoodNum.hide();
+                            }else {
+                                phonenoVia.hide();
+                                phonegoodNum.show();
+                                registerBtn.removeAttr('disabled');
+                                phone.attr('readonly','readonly');
+                            }
+
+                        });
+
+
+                        $.ajax('/user/register/json', {
+                            method: 'POST',
+                            data: {account: accountFile},
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                console.log(error);
+                            },
+                            success: function (result) {
+                                console.log(result.success);//true
+                                displayName.val(result.success);
+                            }
+                        });
+                   }else {
+                        noVia.show();
+                        goodNum.hide();
+                        viaing.hide();
+                    }
+                }
+            });
+        });
+    });
+
+</script>
+</html>
