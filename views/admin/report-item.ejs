@@ -1,0 +1,73 @@
+<html>
+<%- include ../partials/head.ejs %>
+<body>
+<div class="container">
+    <%- include menu.ejs %>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <form action="/admin/index" method="post">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    選擇查詢日期
+                </div>
+                <div class="panel-body">
+                    <div class="input-group" id="itempicker">
+                        <input type="text"  class="form-control " name="queryDate" />
+                            <span class="input-group-addon">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                            </span>
+                    </div>
+                </div>
+                <div class="panel-footer clearfix">
+                    <button class="btn btn-default pull-right">Query</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<table class="table table-bordered table-condensed table-striped">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Price</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <% results.forEach(function (o) { %>
+    <tr>
+        <td>
+            <input type="text" name="name" class="form-control" value="<%- o._id.item %>"readonly="readonly"required>
+        </td>
+        <td>
+            <div class="form-group form-inline">
+            <%- o.sum %>
+            </div>
+        </td>
+    </tr>
+    <% }) %>
+    </tbody>
+</table>
+
+<script>
+    var value = '<%- selectedDate %>'
+</script>
+<script>
+    function init() {
+        var minDate = new Date(Date.now() - 24 * 60 * 60 * 1000);
+        var maxDate = new Date(Date.now() + 24 * 60 * 60 * 1000);
+        var dtpicker = $('#itempicker > input');
+
+        dtpicker.datetimepicker({
+            timepicker: false,
+            value: value,
+            format: 'Y/m/d'
+        });
+    }
+
+    $(document).ready(init);
+</script>
+
+</body>
+</html>

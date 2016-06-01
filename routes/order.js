@@ -137,12 +137,14 @@ router.get('/success', function (req, res, next) {
     var orderId = req.cookies.orderId;
 
     models.Order.findById(orderId).populate('list.item').exec().then(function (order) {
-        res.clearCookie('orderId', {});
 
+        res.clearCookie('orderId', {});
+        //res.send(order.list);
         res.render('success', {
             title: 'Success',
-            order: order
+            orders: order
         });
+
     });
 });
 

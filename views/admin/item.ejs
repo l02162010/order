@@ -1,5 +1,8 @@
 <html>
 <%- include ../partials/head.ejs %>
+<%
+var foodTypes = ['特餐', '飯類', '麵食', '水餃', '炸物', '湯類', '飲料'];
+%>
 <body>
 <div class="container">
     <%- include menu.ejs %>
@@ -16,13 +19,16 @@
                 <div class="form-group">
                     <label>種類</label>
                     <select class="form-control" name="type">　
-                        <option>特餐</option>
-                        <option>飯類</option>
-                        <option>麵食</option>
-                        <option>水餃</option>
-                        <option>炸物</option>
-                        <option>湯類</option>
-                        <option>飲料</option>
+                        <!--<option>特餐</option>-->
+                        <!--<option>飯類</option>-->
+                        <!--<option>麵食</option>-->
+                        <!--<option>水餃</option>-->
+                        <!--<option>炸物</option>-->
+                        <!--<option>湯類</option>-->
+                        <!--<option>飲料</option>-->
+                        <% foodTypes.forEach(function(ft) { %>
+                        <option><%- ft %></option>
+                        <% }); %>
                     </select>
                 </div>
                 <div class="form-group">
@@ -53,6 +59,7 @@
                 <thead>
                 <tr>
                     <th>Photo</th>
+                    <th>type</th>
                     <th>Name</th>
                     <th>Price</th>
                     <th>Action</th>
@@ -71,14 +78,17 @@
                     </td>
                     <td>
                         <select class="form-control" name="type">　
-                            <option selected><%- item.type %></option>
-                            <option>特餐</option>
-                            <option>飯類</option>
-                            <option>麵食</option>
-                            <option>水餃</option>
-                            <option>炸物</option>
-                            <option>湯類</option>
-                            <option>飲料</option>
+                            <% foodTypes.forEach(function(ft) { %>
+                            <option <%- (ft===item.type)?'selected':'' %> ><%- ft %></option>
+                            <% }); %>
+                            <!--<option selected><%- item.type %></option>-->
+                            <!--<option>特餐</option>-->
+                            <!--<option>飯類</option>-->
+                            <!--<option>麵食</option>-->
+                            <!--<option>水餃</option>-->
+                            <!--<option>炸物</option>-->
+                            <!--<option>湯類</option>-->
+                            <!--<option>飲料</option>-->
                         </select>
 
                     </td>

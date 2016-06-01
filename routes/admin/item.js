@@ -71,10 +71,9 @@ router.post('/update/:id', upload.single('photo'), function (req, res, next) {
 
     var file = req.file;
     var data = req.body;
-
     data.price = {
-        small: data.priceSmall,
-        big: data.priceBig
+        small: parseInt(data.priceSmall),
+        big: parseInt(data.priceBig)
     };
 
     if(file && !checkFiletype(file)) {

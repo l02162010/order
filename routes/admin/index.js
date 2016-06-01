@@ -5,6 +5,8 @@ var admin = pipe.admin('/admin/login');
 var jwt = require('jsonwebtoken');
 var config = require('../../config');
 var Promise = require('bluebird');
+var moment = require('moment');
+
 
 router.use('/item', admin, require('./item'));
 router.use('/stock', admin, require('./stock'));
@@ -28,6 +30,23 @@ router.get('/report', admin, function (req, res, next) {
 
 router.get('/report/item', admin, function (req, res, next) {
 
+    var qd = new Date(req.session.queryDate);
+    var start, end;
+
+    if(!req.session.queryDate) {
+        qd = new Date();
+    }
+
+    start = new Date(qd);
+    end = new Date(qd);
+
+    start.setHours(0);
+    start.setMinutes(0);
+    start.setSeconds(0);
+    end.setHours(23);
+    end.setMinutes(59);
+    end.setSeconds(59);
+
     models.History.aggregate()
         .group({
             _id: {
@@ -41,10 +60,13 @@ router.get('/report/item', admin, function (req, res, next) {
         .limit(10)
         .exec()
         .then(function(result) {
-            res.send(result);
-            // res.render('admin/report', {
-            //     title: 'Order::Admin::Report::Item'
-            // });
+            //res.send(result);
+             res.render('admin/report-item', {
+                 title: 'Order::Admin::Report::Item',
+                 results:result,
+                 selectedDate: moment(qd).format('YYYY/MM/DD'),
+                 moment: moment
+             });
         })
         .catch(next);
 });
@@ -53,6 +75,16 @@ router.get('/report/item', admin, function (req, res, next) {
 router.get('/report/person', admin, function (req, res, next) {
     var startDate = req.session.startDate;
     var endDate = req.session.endDate;
+
+    //var qd = new Date(req.session.queryDate);
+    //var start, end;
+    //
+    //if(!req.session.queryDate) {
+    //    qd = new Date();
+    //}
+    //
+    //start = new Date(qd);
+    //end = new Date(qd);
 
     if(!startDate) {
         startDate = new Date();
@@ -98,7 +130,9 @@ router.get('/report/person', admin, function (req, res, next) {
 
                 res.render('admin/report-person', {
                     title: 'Order::Admin::Report::Person',
-                    orders: orders
+                    orders: orders,
+                    selectedDate: moment(qd).format('YYYY/MM/DD'),
+                    moment: moment
                 });
             });
         })

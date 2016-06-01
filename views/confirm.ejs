@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html>
 <%- include partials/head.ejs %>
+<style>
+    body {
+        background-color: #feee7d;
+    }
+
+    .panel-body {
+        background-color: #cff09e;
+    }
+
+    .pb1 {
+        background-color: #EC7357;
+    }
+
+</style>
 <body>
 <div class="container">
     <div class="page-header">
@@ -29,28 +43,44 @@
                             </tr>
                             </thead>
                             <tbody>
+                            <%  var a,b = 0; %>
                             <% order.list.forEach(function (l) { %>
                             <tr>
                                 <td>
-                                    <%- l.item.name %> (<%- l.item.price.big %> / <%- l.item.price.small %>)
+                                    <%- l.item.name+'('+ l.item.price.big +'/'+l.item.price.small+')' %>
                                 </td>
                                 <td>
-                                    <span>Big: <%- l.amount.big %></span>
-                                    <span>Small: <%- l.amount.small %></span>
+                                    <% if (l.amount.big > 0) { %>
+                                    大份:<%- l.amount.big %>
+                                    <% } %>
+                                    <% if (l.amount.small > 0) { %>
+                                    小份:<%- l.amount.small %>
+                                    <% } %>
                                 </td>
                                 <td>
-                                    <span>Big: <%- l.amount.big * l.item.price.big %></span>
-                                    <span>Small: <%- l.amount.small * l.item.price.small %></span>
+                                    <% if (l.amount.big > 0) { %>
+                                    大份:<%- l.amount.big * l.item.price.big %>
+                                    <% } %>
+                                    <% if (l.amount.small > 0) { %>
+                                    小份:<%- l.amount.small * l.item.price.small %>
+                                    <% } %>
+                                    <p style="font-weight: bolder; color: #c7254e">小計:<%- (l.amount.big * l.item.price.big) + (l.amount.small * l.item.price.small) %>
+                                    </p>
                                 </td>
+
+                                    <%  a = (l.amount.big * l.item.price.big) + (l.amount.small * l.item.price.small); %>
+                                    <% b += a%>
+
                             </tr>
                             <% }) %>
+                           <h3 style="font-weight: bolder"> 總計:<%- b %></h3>
                             </tbody>
                         </table>
                     </div>
                     <div class="panel-heading">
                         取餐時間
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body pb1">
                         <div class="input-group" id="datetime">
                             <input type="text" class="form-control" name="datetime"/>
                         <span class="input-group-addon">
@@ -59,7 +89,7 @@
                         </div>
                     </div>
                     <div class="panel-footer clearfix">
-                        <button class="btn btn-default pull-right">Confirm</button>
+                        <button  class="btn btn-success  btn-lg pull-right">確認</button>
                     </div>
                 </div>
             </form>

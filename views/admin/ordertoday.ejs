@@ -17,29 +17,29 @@
 <div class="container">
     <%- include menu.ejs %>
     <!--<div class="row">-->
-        <!--<div class="col-sm-12">-->
-            <!--<form action="/admin/ordertoday" method="post">-->
-                <!--<div class="panel panel-default">-->
-                    <!--<div class="panel-heading">-->
-                        <!--選擇查詢日期-->
-                    <!--</div>-->
-                    <!--<div class="panel-body">-->
-                        <!--<div class="input-group" id="orderDate">-->
-                            <!--<input type="text" class="form-control" name="queryDate"/>-->
-                            <!--<span class="input-group-addon">-->
-                                <!--<i class="glyphicon glyphicon-calendar"></i>-->
-                            <!--</span>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="panel-footer clearfix">-->
-                        <!--<button class="btn btn-default pull-right">Query</button>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</form>-->
-        <!--</div>-->
+    <!--<div class="col-sm-12">-->
+    <!--<form action="/admin/ordertoday" method="post">-->
+    <!--<div class="panel panel-default">-->
+    <!--<div class="panel-heading">-->
+    <!--選擇查詢日期-->
+    <!--</div>-->
+    <!--<div class="panel-body">-->
+    <!--<div class="input-group" id="orderDate">-->
+    <!--<input type="text" class="form-control" name="queryDate"/>-->
+    <!--<span class="input-group-addon">-->
+    <!--<i class="glyphicon glyphicon-calendar"></i>-->
+    <!--</span>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="panel-footer clearfix">-->
+    <!--<button class="btn btn-default pull-right">Query</button>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</form>-->
+    <!--</div>-->
     <!--</div>-->
     <% orders.forEach(function (order) { %>
-    <% if(order.canceled != true && order.finished !=true) { %>
+    <% if(order.canceled != true && order.finished != true) { %>
 
     <div class="row">
         <div class="col-sm-12">
@@ -56,7 +56,12 @@
                     <button type="button" class="btn btn-default cancel" data-id="<%- order.id %>">CANCEL</button>
                 </div>
                 <input type="hidden" name="action" class="action">
-                <% } %>
+                <% }else {%>
+                <div class="btn-group btn-group-sm">
+                    <button type="button" class="btn btn-default cancel" data-id="<%- order.id %>">CANCEL</button>
+                </div>
+                <input type="hidden" name="action" class="action">
+                <%}%>
             </form>
 
             <table class="table table-bordered table-striped table-condensed">

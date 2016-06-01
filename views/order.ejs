@@ -3,14 +3,33 @@
 <%- include partials/head.ejs %>
 <body>
 <style>
+    body{
+        background-color: #feee7d;
+    }
+    .thumbnail{
+        background-color: #cff09e;
+    }
+    h3{
+        color: #6C49B8;
+    }
+
     input[type=number]::-webkit-inner-spin-button,
     input[type=number]::-webkit-outer-spin-button {
         -webkit-appearance: none;
         margin: 0;
     }
+
+    .item-photo {
+        width: 40px;
+        height: 40px;
+    }
+
+    .nav {
+        margin-bottom: 5px;
+    }
 </style>
 <div class="container">
-    <div class="page-header">
+    <div>
         <h4>
             <%- include partials/welcome.ejs %>
         </h4>
@@ -20,100 +39,343 @@
     </div>
 
     <div class="row">
-        <% if (typeof error !== 'undefined') { %>
         <div class="col-sm-12">
-            <div class="label label-danger">
-                <%- error.message %>
-            </div>
-        </div>
-        <% } %>
-        <div class="col-sm-12">
-
-                <!-- Nav tabs -->
-                <ul class="nav nav-pills " role="tablist">
-                    <li role="presentation" class="active"><a href="#sp" aria-controls="sp" role="tab" class="list"
-                                                                 data-toggle="tab">特餐</a></li>
-
-                    <li role="presentation"><a href="#rice" aria-controls="rice" role="tab" data-toggle="tab" class="list">米飯</a>
-                    </li>
-                    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="list">麵食</a>
-                    </li>
-                    <li role="presentation"><a href="#dumplings" aria-controls="dumplings" role="tab" data-toggle="tab" class="list">水餃</a>
-                    </li>
-                    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab"
-                                               data-toggle="tab" class="list">炸物</a></li>
-                    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab"
-                                               data-toggle="tab" class="list">湯</a></li>
-                    <li role="presentation"><a href="#drink" aria-controls="drink" role="tab"
-                                               data-toggle="tab" class="dropdown open list" class="list">飲料</a></li>
-                </ul>
-
             <form action="/order" method="post">
-                <table class="table table-bordered table-condensed table-striped">
-                    <thead>
-                    <tr>
-                        <th style="width: 200px;">Photo</th>
-                        <th style="width: 120px;">Name</th>
-                        <th style="width: 100px;">Price</th>
-                        <th style="width: 100px;">Remain</th>
-                        <th>Amount</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <% items.forEach(function(item) { %>
-                    <tr>
-                        <td>
-                            <% if(item.photo) { %>
-                            <img src="/photo/<%- item.photo %>" class="item-photo">
-                            <% } else { %>
-                            <img src="/img/default.jpg" class="item-photo">
-                            <% } %>
-                        </td>
-                        <td>
-                            <%- item.name %>
-                        </td>
-                        <td>
-                            <p>
-                                BIG: <%- item.price.big %>
-                            </p>
-                            <p>
-                                SMALL: <%- item.price.small %>
-                            </p>
-                        </td>
-                        <td>
-                            <p>
-                                BIG: <%- item.amount.big %>
-                            </p>
-                            <p>
-                                SMALL: <%- item.amount.small %>
-                            </p>
-                        </td>
-                        <td>
-                            <input type="hidden" value="<%- item.id %>" name="id">
-                            <input type="hidden" value="<%- item.amount.big %>" name="maxBig">
-                            <input type="hidden" value="<%- item.amount.small %>" name="maxSmall">
-                            <input type="hidden" value="<%- item.name %>" name="name">
 
-                            <div class="form-group input-group">
-                                <span class="input-group-addon">BIG</span>
-                                <input class="form-control spinner" type="number"
-                                       max="<%- item.amount.big %>" name="amountBig"
-                                       value="0" readonly="readonly">
-                            </div>
-                            <div class="form-group input-group">
-                                <span class="input-group-addon">SMALL</span>
-
-                                <input class="form-control spinner" type="number" max="<%- item.amount.small %>"
-                                       name="amountSmall" value="0" readonly="readonly">
-
-                            </div>
-                        </td>
-                    </tr>
-                    <% }) %>
-                    </tbody>
-                </table>
                 <div class="row">
                     <div class="col-sm-12 clearfix">
+                        <div role="tabpanel">
+
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-pills" role="tablist">
+                                <li role="presentation" class="active"><a href="#SP" aria-controls="SP" role="tab"
+                                                                          data-toggle="tab">特餐</a></li>
+                                <li role="presentation"><a href="#Rice" aria-controls="Rice" role="tab"
+                                                           data-toggle="tab">米飯</a>
+                                </li>
+                                <li role="presentation"><a href="#Noodle" aria-controls="Noodle" role="tab"
+                                                           data-toggle="tab">麵食</a>
+                                </li>
+                                <li role="presentation"><a href="#Dumplings" aria-controls="Dumplings" role="tab"
+                                                           data-toggle="tab">水餃</a>
+                                </li>
+                                <li role="presentation"><a href="#Fry" aria-controls="Fry" role="tab" data-toggle="tab">炸物</a>
+                                </li>
+                                <li role="presentation"><a href="#soup" aria-controls="soup" role="tab"
+                                                           data-toggle="tab">湯</a>
+                                </li>
+                                <li role="presentation"><a href="#Drink" aria-controls="Drink" role="tab"
+                                                           data-toggle="tab">飲料</a>
+                                </li>
+                            </ul>
+                            <% if (typeof error !== 'undefined') { %>
+                            <div class="col-sm-12">
+                                <div class="label label-danger">
+                                    <%- error.message %>
+                                </div>
+                            </div>
+                            <% } %>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active" id="SP">
+                                    <div class="thumbnail">
+                                        <div class="caption">
+                                            <% items.forEach(function(item) { %>
+                                            <% if (item.type === '特餐'){%>
+                                            <h3 class="h" style="padding-bottom: 0px;margin-bottom: 0px;">
+                                                <strong><%- item.name %></strong>
+                                                <small class="s"> <%- item.price.small %> </small>
+                                    <span>
+                                        <% if(item.photo) { %>
+                                        <img src="/photo/<%- item.photo %>" class="item-photo">
+                                        <% } else { %>
+                                        <img src="/img/default.jpg" class="item-photo">
+                                        <% } %>
+                                    </span>
+                                            </h3>
+                                            <p style="padding-top: 0px;">升級大份(+<%- item.price.big - item.price.small %>
+                                                元)</p>
+                                            <input type="hidden" value="<%- item.id %>" name="id">
+                                            <input type="hidden" value="<%- item.amount.big %>" name="maxBig">
+                                            <input type="hidden" value="<%- item.amount.small %>" name="maxSmall">
+                                            <input type="hidden" value="<%- item.name %>" name="name">
+
+                                            <div class="form-group input-group">
+                                                <span class="input-group-addon">BIG</span>
+                                                <input class="form-control spinner" type="number"
+                                                       max="<%- item.amount.big %>" name="amountBig"
+                                                       value="0" readonly="readonly">
+                                            </div>
+                                            <div class="form-group input-group">
+                                                <span class="input-group-addon">SMALL</span>
+
+                                                <input class="form-control spinner" type="number"
+                                                       max="<%- item.amount.small %>"
+                                                       name="amountSmall" value="0" readonly="readonly">
+
+                                            </div>
+                                            <% }%>
+                                            <% }); %>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="Rice">
+                                    <div class="thumbnail">
+                                        <div class="caption">
+                                            <% items.forEach(function(item) { %>
+                                            <% if (item.type === '飯類'){%>
+                                            <h3 class="h" style="padding-bottom: 0px;margin-bottom: 0px;">
+                                                <strong><%- item.name %></strong>
+                                                <small class="s"> <%- item.price.small %> </small>
+                                    <span>
+                                        <% if(item.photo) { %>
+                                        <img src="/photo/<%- item.photo %>" class="item-photo">
+                                        <% } else { %>
+                                        <img src="/img/default.jpg" class="item-photo">
+                                        <% } %>
+                                    </span>
+                                            </h3>
+                                            <p style="padding-top: 0px;">升級大份(+<%- item.price.big - item.price.small %>
+                                                元)</p>
+                                            <input type="hidden" value="<%- item.id %>" name="id">
+                                            <input type="hidden" value="<%- item.amount.big %>" name="maxBig">
+                                            <input type="hidden" value="<%- item.amount.small %>" name="maxSmall">
+                                            <input type="hidden" value="<%- item.name %>" name="name">
+
+                                            <div class="form-group input-group">
+                                                <span class="input-group-addon">BIG</span>
+                                                <input class="form-control spinner" type="number"
+                                                       max="<%- item.amount.big %>" name="amountBig"
+                                                       value="0" readonly="readonly">
+                                            </div>
+                                            <div class="form-group input-group">
+                                                <span class="input-group-addon">SMALL</span>
+
+                                                <input class="form-control spinner" type="number"
+                                                       max="<%- item.amount.small %>"
+                                                       name="amountSmall" value="0" readonly="readonly">
+
+                                            </div>
+                                            <% }%>
+                                            <% }); %>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="Noodle">
+                                    <div class="thumbnail">
+                                        <div class="caption">
+                                            <% items.forEach(function(item) { %>
+                                            <% if (item.type === '麵食'){%>
+                                            <h3 class="h" style="padding-bottom: 0px;margin-bottom: 0px;">
+                                                <strong><%- item.name %></strong>
+                                                <small class="s"> <%- item.price.small %> </small>
+                                    <span>
+                                        <% if(item.photo) { %>
+                                        <img src="/photo/<%- item.photo %>" class="item-photo">
+                                        <% } else { %>
+                                        <img src="/img/default.jpg" class="item-photo">
+                                        <% } %>
+                                    </span>
+                                            </h3>
+                                            <p style="padding-top: 0px;">升級大份(+<%- item.price.big - item.price.small %>
+                                                元)</p>
+                                            <input type="hidden" value="<%- item.id %>" name="id">
+                                            <input type="hidden" value="<%- item.amount.big %>" name="maxBig">
+                                            <input type="hidden" value="<%- item.amount.small %>" name="maxSmall">
+                                            <input type="hidden" value="<%- item.name %>" name="name">
+
+                                            <div class="form-group input-group">
+                                                <span class="input-group-addon">BIG</span>
+                                                <input class="form-control spinner" type="number"
+                                                       max="<%- item.amount.big %>" name="amountBig"
+                                                       value="0" readonly="readonly">
+                                            </div>
+                                            <div class="form-group input-group">
+                                                <span class="input-group-addon">SMALL</span>
+
+                                                <input class="form-control spinner" type="number"
+                                                       max="<%- item.amount.small %>"
+                                                       name="amountSmall" value="0" readonly="readonly">
+
+                                            </div>
+                                            <% }%>
+                                            <% }); %>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="Dumplings">
+                                    <div class="thumbnail">
+                                        <div class="caption">
+                                            <% items.forEach(function(item) { %>
+                                            <% if (item.type === '水餃'){%>
+                                            <h3 class="h" style="padding-bottom: 0px;margin-bottom: 0px;">
+                                                <strong><%- item.name %></strong>
+                                                <small class="s"> <%- item.price.small %> </small>
+                                    <span>
+                                        <% if(item.photo) { %>
+                                        <img src="/photo/<%- item.photo %>" class="item-photo">
+                                        <% } else { %>
+                                        <img src="/img/default.jpg" class="item-photo">
+                                        <% } %>
+                                    </span>
+                                            </h3>
+                                            <p style="padding-top: 0px;">升級大份(+<%- item.price.big - item.price.small %>
+                                                元)</p>
+                                            <input type="hidden" value="<%- item.id %>" name="id">
+                                            <input type="hidden" value="<%- item.amount.big %>" name="maxBig">
+                                            <input type="hidden" value="<%- item.amount.small %>" name="maxSmall">
+                                            <input type="hidden" value="<%- item.name %>" name="name">
+
+                                            <div class="form-group input-group">
+                                                <span class="input-group-addon">BIG</span>
+                                                <input class="form-control spinner" type="number"
+                                                       max="<%- item.amount.big %>" name="amountBig"
+                                                       value="0" readonly="readonly">
+                                            </div>
+                                            <div class="form-group input-group">
+                                                <span class="input-group-addon">SMALL</span>
+
+                                                <input class="form-control spinner" type="number"
+                                                       max="<%- item.amount.small %>"
+                                                       name="amountSmall" value="0" readonly="readonly">
+
+                                            </div>
+                                            <% }%>
+                                            <% }); %>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="Fry">
+                                    <div class="thumbnail">
+                                        <div class="caption">
+                                            <% items.forEach(function(item) { %>
+                                            <% if (item.type === '炸物'){%>
+                                            <h3 class="h" style="padding-bottom: 0px;margin-bottom: 0px;">
+                                                <strong><%- item.name %></strong>
+                                                <small class="s"> <%- item.price.small %> </small>
+                                    <span>
+                                        <% if(item.photo) { %>
+                                        <img src="/photo/<%- item.photo %>" class="item-photo">
+                                        <% } else { %>
+                                        <img src="/img/default.jpg" class="item-photo">
+                                        <% } %>
+                                    </span>
+                                            </h3>
+                                            <p style="padding-top: 0px;">升級大份(+<%- item.price.big - item.price.small %>
+                                                元)</p>
+                                            <input type="hidden" value="<%- item.id %>" name="id">
+                                            <input type="hidden" value="<%- item.amount.big %>" name="maxBig">
+                                            <input type="hidden" value="<%- item.amount.small %>" name="maxSmall">
+                                            <input type="hidden" value="<%- item.name %>" name="name">
+
+                                            <div class="form-group input-group">
+                                                <span class="input-group-addon">BIG</span>
+                                                <input class="form-control spinner" type="number"
+                                                       max="<%- item.amount.big %>" name="amountBig"
+                                                       value="0" readonly="readonly">
+                                            </div>
+                                            <div class="form-group input-group">
+                                                <span class="input-group-addon">SMALL</span>
+
+                                                <input class="form-control spinner" type="number"
+                                                       max="<%- item.amount.small %>"
+                                                       name="amountSmall" value="0" readonly="readonly">
+
+                                            </div>
+                                            <% }%>
+                                            <% }); %>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="soup">
+                                    <div class="thumbnail">
+                                        <div class="caption">
+                                            <% items.forEach(function(item) { %>
+                                            <% if (item.type === '湯類'){%>
+                                            <h3 class="h" style="padding-bottom: 0px;margin-bottom: 0px;">
+                                                <strong><%- item.name %></strong>
+                                                <small class="s"> <%- item.price.small %> </small>
+                                    <span>
+                                        <% if(item.photo) { %>
+                                        <img src="/photo/<%- item.photo %>" class="item-photo">
+                                        <% } else { %>
+                                        <img src="/img/default.jpg" class="item-photo">
+                                        <% } %>
+                                    </span>
+                                            </h3>
+                                            <p style="padding-top: 0px;">升級大份(+<%- item.price.big - item.price.small %>
+                                                元)</p>
+                                            <input type="hidden" value="<%- item.id %>" name="id">
+                                            <input type="hidden" value="<%- item.amount.big %>" name="maxBig">
+                                            <input type="hidden" value="<%- item.amount.small %>" name="maxSmall">
+                                            <input type="hidden" value="<%- item.name %>" name="name">
+
+                                            <div class="form-group input-group">
+                                                <span class="input-group-addon">BIG</span>
+                                                <input class="form-control spinner" type="number"
+                                                       max="<%- item.amount.big %>" name="amountBig"
+                                                       value="0" readonly="readonly">
+                                            </div>
+                                            <div class="form-group input-group">
+                                                <span class="input-group-addon">SMALL</span>
+
+                                                <input class="form-control spinner" type="number"
+                                                       max="<%- item.amount.small %>"
+                                                       name="amountSmall" value="0" readonly="readonly">
+
+                                            </div>
+                                            <% }%>
+                                            <% }); %>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="Drink">
+                                    <div class="thumbnail">
+                                        <div class="caption">
+                                            <% items.forEach(function(item) { %>
+                                            <% if (item.type === '飲料'){%>
+                                            <h3 class="h" style="padding-bottom: 0px;margin-bottom: 0px;">
+                                                <strong><%- item.name %></strong>
+                                                <small class="s"> <%- item.price.small %> </small>
+                                    <span>
+                                        <% if(item.photo) { %>
+                                        <img src="/photo/<%- item.photo %>" class="item-photo">
+                                        <% } else { %>
+                                        <img src="/img/default.jpg" class="item-photo">
+                                        <% } %>
+                                    </span>
+                                            </h3>
+                                            <p style="padding-top: 0px;">升級大份(+<%- item.price.big - item.price.small %>
+                                                元)</p>
+                                            <input type="hidden" value="<%- item.id %>" name="id">
+                                            <input type="hidden" value="<%- item.amount.big %>" name="maxBig">
+                                            <input type="hidden" value="<%- item.amount.small %>" name="maxSmall">
+                                            <input type="hidden" value="<%- item.name %>" name="name">
+
+                                            <div class="form-group input-group">
+                                                <span class="input-group-addon">BIG</span>
+                                                <input class="form-control spinner" type="number"
+                                                       max="<%- item.amount.big %>" name="amountBig"
+                                                       value="0" readonly="readonly">
+                                            </div>
+                                            <div class="form-group input-group">
+                                                <span class="input-group-addon">SMALL</span>
+
+                                                <input class="form-control spinner" type="number"
+                                                       max="<%- item.amount.small %>"
+                                                       name="amountSmall" value="0" readonly="readonly">
+
+                                            </div>
+                                            <% }%>
+                                            <% }); %>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
                         <button class="btn btn-default pull-right">ORDER</button>
                     </div>
                 </div>
@@ -124,8 +386,8 @@
 
 
 </body>
-<link rel='stylesheet' href='/sheetstyle/jquery.bootstrap-touchspin.min.css' />
-<script src="javascripts/jquery.bootstrap-touchspin.min.js"> </script>
+<link rel='stylesheet' href='/sheetstyle/jquery.bootstrap-touchspin.min.css'/>
+<script src="javascripts/jquery.bootstrap-touchspin.min.js"></script>
 <script>
 
 
@@ -143,3 +405,4 @@
 </script>
 
 </html>
+
