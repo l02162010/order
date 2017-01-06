@@ -10,7 +10,7 @@ router.get('/', function (req, res, next) {
     var qd = new Date(req.session.queryDate);
     var start, end;
 
-    if(!req.session.queryDate) {
+    if (!req.session.queryDate) {
         qd = new Date();
     }
 
@@ -28,8 +28,11 @@ router.get('/', function (req, res, next) {
         vip: req.session.user,
         datetime: {
             $gte: start,
-            $lte: end
+            $lte: end,
+
         }
+    }).sort({
+        "datetime":-1
     }).populate('list.item').exec().then(function (orders) {
         res.render('query', {
             title: 'Query',

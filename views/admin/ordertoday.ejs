@@ -11,7 +11,8 @@
     <script src="/jquery-validation/dist/additional-methods.min.js"></script>
     <script src="/moment/min/moment-with-locales.min.js"></script>
     <script src="/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
-    <meta http-equiv="refresh" content="5"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="refresh" content="60"/>
 </head>
 <body>
 <div class="container">
@@ -49,6 +50,9 @@
                 <span class="label label-info">
                     <%- order.vip.displayName %>
                 </span>
+                <span class="label label-primary">
+                    <%- order.vip.phone %>
+                </span>
 
                 <% if(order.datetime > new Date() && !order.canceled && !order.finished) { %>
                 <div class="btn-group btn-group-sm">
@@ -58,7 +62,9 @@
                 <input type="hidden" name="action" class="action">
                 <% }else {%>
                 <div class="btn-group btn-group-sm">
-                    <button type="button" class="btn btn-default cancel" data-id="<%- order.id %>">CANCEL</button>
+                    <label class="label label-warning">請注意時間是否正確</label>
+                    <button type="button" class="btn btn-success finish" data-id="<%- order.id %>">FINISH</button>
+                    <button type="button" class="btn btn-danger cancel" data-id="<%- order.id %>">CANCEL</button>
                 </div>
                 <input type="hidden" name="action" class="action">
                 <%}%>
@@ -128,6 +134,7 @@
         var cancelBu = $('button.cancel');
 
         finishBu.click(function () {
+
             var form = $(this).parent().parent();
             var action = form.find('.action');
 
@@ -137,12 +144,18 @@
         });
 
         cancelBu.click(function () {
-            var form = $(this).parent().parent();
-            var action = form.find('.action');
 
-            action.val('cancel');
+            var isGood=confirm('確定刪除?');
 
-            form.submit();
+            if (isGood) {
+
+                var form = $(this).parent().parent();
+                var action = form.find('.action');
+
+                action.val('cancel');
+
+                form.submit();
+            }
         });
     }
 

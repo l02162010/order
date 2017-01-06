@@ -9,3 +9,5 @@ module.exports = {
         displayName: String
     })
 };
+
+db.vips.insert({"phone":"0900123456","password":"123456","displayName":"測試用A"})

@@ -7,7 +7,6 @@ var config = require('../../config');
 var Promise = require('bluebird');
 var moment = require('moment');
 
-
 router.use('/item', admin, require('./item'));
 router.use('/stock', admin, require('./stock'));
 router.use('/order', admin, require('./order'));
@@ -29,28 +28,35 @@ router.get('/report', admin, function (req, res, next) {
 });
 
 router.get('/report/item', admin, function (req, res, next) {
+    var startDate = new Date(req.session.startDate);
+    var endDate = new Date(req.session.endDate);
 
-    var qd = new Date(req.session.queryDate);
-    var start, end;
-
-    if(!req.session.queryDate) {
-        qd = new Date();
+    if(!startDate) {
+        startDate = new Date();
+        startDate.setHours(0);
+        startDate.setMinutes(0);
     }
 
-    start = new Date(qd);
-    end = new Date(qd);
-
-    start.setHours(0);
-    start.setMinutes(0);
-    start.setSeconds(0);
-    end.setHours(23);
-    end.setMinutes(59);
-    end.setSeconds(59);
+    if(!endDate) {
+        endDate = new Date();
+        endDate.setHours(23);
+        endDate.setMinutes(59);
+    }
+    endDate.setHours(23);
+    endDate.setMinutes(59);
+    endDate.setSeconds(59);
 
     models.History.aggregate()
+        .match({
+            createdAt: {
+                $lte: endDate,
+                $gte: startDate
+            }
+        })
         .group({
             _id: {
                 item: '$item'
+
             },
             sum: {
                 $sum: '$amount'
@@ -60,31 +66,30 @@ router.get('/report/item', admin, function (req, res, next) {
         .limit(10)
         .exec()
         .then(function(result) {
-            //res.send(result);
+           // res.send(result);
+            console.log(result);
              res.render('admin/report-item', {
                  title: 'Order::Admin::Report::Item',
-                 results:result,
-                 selectedDate: moment(qd).format('YYYY/MM/DD'),
+                 result:result,
+                 selectedDate: moment(startDate).format('YYYY/MM/DD'),
+                 selectedDate1: moment(endDate).format('YYYY/MM/DD'),
+
                  moment: moment
              });
         })
         .catch(next);
+
 });
 
+router.post('/report/item',function(req,res,next){
+    req.session.startDate = moment(req.body.startDate, 'YYYY/MM/DD')._d;
+    req.session.endDate = moment(req.body.endDate, 'YYYY/MM/DD')._d;
+    res.redirect('/admin/report/item');
+});
 
 router.get('/report/person', admin, function (req, res, next) {
-    var startDate = req.session.startDate;
-    var endDate = req.session.endDate;
-
-    //var qd = new Date(req.session.queryDate);
-    //var start, end;
-    //
-    //if(!req.session.queryDate) {
-    //    qd = new Date();
-    //}
-    //
-    //start = new Date(qd);
-    //end = new Date(qd);
+    var startDate = new Date(req.session.startDate);
+    var endDate = new Date(req.session.endDate);
 
     if(!startDate) {
         startDate = new Date();
@@ -98,12 +103,16 @@ router.get('/report/person', admin, function (req, res, next) {
         endDate.setMinutes(59);
     }
 
+    endDate.setHours(23);
+    endDate.setMinutes(59);
+    endDate.setSeconds(59);
+
     models.Order.aggregate()
         .match({
-            // datetime: {
-            //     $lte: endDate,
-            //     $gte: startDate
-            // },
+             datetime: {
+                 $lte: endDate,
+                 $gte: startDate
+             },
             finished: {
                 $eq: true
             }
@@ -121,6 +130,7 @@ router.get('/report/person', admin, function (req, res, next) {
         .limit(5)
         .exec()
         .then(function(orders) {
+            console.log(orders);
             Promise.map(orders, function (o) {
                 return models.Vip.findById(o.vip).exec()
             }).then(function(users) {
@@ -131,8 +141,10 @@ router.get('/report/person', admin, function (req, res, next) {
                 res.render('admin/report-person', {
                     title: 'Order::Admin::Report::Person',
                     orders: orders,
-                    selectedDate: moment(qd).format('YYYY/MM/DD'),
+                    selectedDate: moment(startDate).format('YYYY/MM/DD'),
+                    selectedDate1: moment(endDate).format('YYYY/MM/DD'),
                     moment: moment
+
                 });
             });
         })
@@ -142,7 +154,7 @@ router.get('/report/person', admin, function (req, res, next) {
 router.post('/report/person', function (req, res, next) {
     req.session.startDate = moment(req.body.startDate, 'YYYY/MM/DD')._d;
     req.session.endDate = moment(req.body.endDate, 'YYYY/MM/DD')._d;
-    res.redirect('/report/person');
+    res.redirect('/admin/report/person');
 });
 
 router.get('/login', function (req, res, next) {

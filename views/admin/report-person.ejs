@@ -6,27 +6,27 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <form action="/admin/report/item" method="post">
+        <form action="/admin/report/person" method="post">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    選擇查詢日期
+                    選擇查詢日期起訖
                 </div>
                 <div class="panel-body">
-                    <div class="input-group" id="itempicker">
-                        <input type="text"  class="form-control " name="startDate" />
+                    <div class="input-group" id="reportpicker">
+                        <input id="start" type="text"  class="form-control " name="startDate" />
                             <span class="input-group-addon">
                                 <i class="glyphicon glyphicon-calendar"></i>
                             </span>
                     </div>
-                    <div class="input-group" id="itempicker1">
-                        <input  type="text"  class="form-control " name="endDate" />
+                    <div class="input-group" id="reportpicker1">
+                        <input id="end" type="text"  class="form-control " name="endDate" />
                             <span class="input-group-addon">
                                 <i class="glyphicon glyphicon-calendar"></i>
                             </span>
                     </div>
                 </div>
                 <div class="panel-footer clearfix">
-                    <button class="btn btn-default pull-right">列出食物排行榜</button>
+                    <button class="btn btn-default pull-right">Query</button>
                 </div>
             </div>
         </form>
@@ -41,10 +41,10 @@
     </tr>
     </thead>
     <tbody>
-    <% result.forEach(function (o) { %>
+    <% orders.forEach(function (o) { %>
     <tr>
         <td>
-            <input type="text" name="name" class="form-control" value="<%- o._id.item %>"readonly="readonly"required>
+            <input type="text" name="name" class="form-control" value="<%- o.vip.displayName %>"readonly="readonly"required>
         </td>
         <td>
             <div class="form-group form-inline">
@@ -59,23 +59,28 @@
 <script>
     var value = '<%- selectedDate %>'
     var value1 = '<%- selectedDate1 %>'
-   </script>
+</script>
 <script>
     function init() {
+        var start = $('#start').val;
+        var end = $('#end').val;
         var minDate = new Date(Date.now() - 24 * 60 * 60 * 1000);
         var maxDate = new Date(Date.now() + 24 * 60 * 60 * 1000);
-        var dtpicker = $('#itempicker > input');
-        var dtpicker1 = $('#itempicker1 > input');
+        var dtpicker = $('#reportpicker > input');
+        var dtpicker1=$('#reportpicker1 > input')
         dtpicker.datetimepicker({
             timepicker: false,
             value: value,
             format: 'Y/m/d'
+
         });
         dtpicker1.datetimepicker({
             timepicker: false,
             value: value1,
             format: 'Y/m/d'
+
         });
+
     }
 
     $(document).ready(init);

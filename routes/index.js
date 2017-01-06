@@ -4,13 +4,13 @@ var router = express.Router();
 router.use('/', function (req, res, next) {
     var error = req.flash('error');
 
-    if(error) {
+    if (error) {
         req.app.locals.error = error;
     }
 
     next();
 }, function (req, res, next) {
-    res.error = function(message, redirect) {
+    res.error = function (message, redirect) {
         req.flash('error', {
             message: message
         });
@@ -22,7 +22,14 @@ router.use('/', function (req, res, next) {
 });
 
 router.get('/', function (req, res, next) {
-    if (req.session.user) req.app.locals.user = req.session.user;
+    if (req.session.user) {
+        req.app.locals.user = req.session.user;
+    }
+    else {
+        req.app.locals.user = 'undefined';
+    }
+
+
     next();
 }, function (req, res, next) {
     models.CoverPhoto.find().exec().then(function (coverPhoto) {

@@ -11,21 +11,22 @@
     <script src="/jquery-validation/dist/additional-methods.min.js"></script>
     <script src="/moment/min/moment-with-locales.min.js"></script>
     <script src="/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
-    <meta http-equiv="refresh" content="5" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="refresh" content="60" />
 </head>
 <body>
 <div class="container">
     <%- include menu.ejs %>
     <div class="row">
         <div class="col-sm-12">
-            <form action="/admin/ordertoday" method="post">
+            <form action="/admin/order" method="post">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         選擇查詢日期
                     </div>
                     <div class="panel-body">
                         <div class="input-group" id="orderDate">
-                            <input type="text" class="form-control" name="queryDate"/>
+                            <input type="text" class="form-control" name="queryDate" />
                             <span class="input-group-addon">
                                 <i class="glyphicon glyphicon-calendar"></i>
                             </span>
@@ -41,7 +42,7 @@
     <% orders.forEach(function (order) { %>
     <div class="row">
         <div class="col-sm-12">
-            <form method="post" action="/admin/ordertoday/update/<%- order.id %>">
+            <form method="post" action="/admin/order/update/<%- order.id %>">
 
                 <%- moment(order.datetime).format('YYYY/MM/DD HH:mm') %>
                 <span class="label label-info">
@@ -115,8 +116,6 @@
 
         dtpicker.datetimepicker({
             timepicker: false,
-            minDate: minDate,
-            maxDate: maxDate,
             value: value,
             format: 'Y/m/d'
         });
@@ -141,6 +140,9 @@
 
             form.submit();
         });
+        $('.input-group .input-group-addon').click(function() {
+            dtpicker.datetimepicker('show');
+        })
     }
 
     $(document).ready(init);

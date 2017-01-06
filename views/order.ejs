@@ -3,13 +3,15 @@
 <%- include partials/head.ejs %>
 <body>
 <style>
-    body{
+    body {
         background-color: #feee7d;
     }
-    .thumbnail{
+
+    .thumbnail {
         background-color: #cff09e;
     }
-    h3{
+
+    h3 {
         color: #6C49B8;
     }
 
@@ -40,7 +42,7 @@
 
     <div class="row">
         <div class="col-sm-12">
-            <form action="/order" method="post">
+            <form id="foo" action="/order" method="post">
 
                 <div class="row">
                     <div class="col-sm-12 clearfix">
@@ -82,8 +84,22 @@
                                     <div class="thumbnail">
                                         <div class="caption">
                                             <% items.forEach(function(item) { %>
-                                            <% if (item.type === '特餐'){%>
+                                            <% if (item.type === '特餐'){ %>
                                             <h3 class="h" style="padding-bottom: 0px;margin-bottom: 0px;">
+                                                <% if (item.amount.big == 0 && item.amount.small == 0){ %>
+                                                <span>
+                                                    <label class="label label-danger">已售完</label>
+                                                </span>
+                                                <% }else if (item.amount.small == 0){ %>
+                                                <span>
+                                                    <label class="label label-danger">小份售完</label>
+                                                </span>
+                                                <% }else if (item.amount.big == 0 ){ %>
+                                                <span>
+                                                    <label class="label label-danger">大份售完</label>
+                                                </span>
+                                                <% }else { %>
+                                                <% } %>
                                                 <strong><%- item.name %></strong>
                                                 <small class="s"> <%- item.price.small %> </small>
                                     <span>
@@ -115,7 +131,7 @@
                                                        name="amountSmall" value="0" readonly="readonly">
 
                                             </div>
-                                            <% }%>
+                                            <% } %>
                                             <% }); %>
                                         </div>
                                     </div>
@@ -124,8 +140,22 @@
                                     <div class="thumbnail">
                                         <div class="caption">
                                             <% items.forEach(function(item) { %>
-                                            <% if (item.type === '飯類'){%>
+                                            <% if (item.type === '飯類'){ %>
                                             <h3 class="h" style="padding-bottom: 0px;margin-bottom: 0px;">
+                                                <% if (item.amount.big == 0 && item.amount.small == 0){ %>
+                                                <span>
+                                                    <label class="label label-danger">已售完</label>
+                                                </span>
+                                                <% }else if (item.amount.small == 0){ %>
+                                                <span>
+                                                    <label class="label label-danger">小份售完</label>
+                                                </span>
+                                                <% }else if (item.amount.big == 0 ){ %>
+                                                <span>
+                                                    <label class="label label-danger">大份售完</label>
+                                                </span>
+                                                <% }else { %>
+                                                <% } %>
                                                 <strong><%- item.name %></strong>
                                                 <small class="s"> <%- item.price.small %> </small>
                                     <span>
@@ -157,7 +187,7 @@
                                                        name="amountSmall" value="0" readonly="readonly">
 
                                             </div>
-                                            <% }%>
+                                            <% } %>
                                             <% }); %>
                                         </div>
                                     </div>
@@ -166,8 +196,22 @@
                                     <div class="thumbnail">
                                         <div class="caption">
                                             <% items.forEach(function(item) { %>
-                                            <% if (item.type === '麵食'){%>
+                                            <% if (item.type === '麵食'){ %>
                                             <h3 class="h" style="padding-bottom: 0px;margin-bottom: 0px;">
+                                                <% if (item.amount.big == 0 && item.amount.small == 0){ %>
+                                                <span>
+                                                    <label class="label label-danger">已售完</label>
+                                                </span>
+                                                <% }else if (item.amount.small == 0){ %>
+                                                <span>
+                                                    <label class="label label-danger">小份售完</label>
+                                                </span>
+                                                <% }else if (item.amount.big == 0 ){ %>
+                                                <span>
+                                                    <label class="label label-danger">大份售完</label>
+                                                </span>
+                                                <% }else { %>
+                                                <% } %>
                                                 <strong><%- item.name %></strong>
                                                 <small class="s"> <%- item.price.small %> </small>
                                     <span>
@@ -199,7 +243,7 @@
                                                        name="amountSmall" value="0" readonly="readonly">
 
                                             </div>
-                                            <% }%>
+                                            <% } %>
                                             <% }); %>
                                         </div>
                                     </div>
@@ -208,8 +252,22 @@
                                     <div class="thumbnail">
                                         <div class="caption">
                                             <% items.forEach(function(item) { %>
-                                            <% if (item.type === '水餃'){%>
+                                            <% if (item.type === '水餃'){ %>
                                             <h3 class="h" style="padding-bottom: 0px;margin-bottom: 0px;">
+                                                <% if (item.amount.big == 0 && item.amount.small == 0){ %>
+                                                <span>
+                                                    <label class="label label-danger">已售完</label>
+                                                </span>
+                                                <% }else if (item.amount.small == 0){ %>
+                                                <span>
+                                                    <label class="label label-danger">小份售完</label>
+                                                </span>
+                                                <% }else if (item.amount.big == 0 ){ %>
+                                                <span>
+                                                    <label class="label label-danger">大份售完</label>
+                                                </span>
+                                                <% }else { %>
+                                                <% } %>
                                                 <strong><%- item.name %></strong>
                                                 <small class="s"> <%- item.price.small %> </small>
                                     <span>
@@ -241,7 +299,7 @@
                                                        name="amountSmall" value="0" readonly="readonly">
 
                                             </div>
-                                            <% }%>
+                                            <% } %>
                                             <% }); %>
                                         </div>
                                     </div>
@@ -250,8 +308,22 @@
                                     <div class="thumbnail">
                                         <div class="caption">
                                             <% items.forEach(function(item) { %>
-                                            <% if (item.type === '炸物'){%>
+                                            <% if (item.type === '炸物'){ %>
                                             <h3 class="h" style="padding-bottom: 0px;margin-bottom: 0px;">
+                                                <% if (item.amount.big == 0 && item.amount.small == 0){ %>
+                                                <span>
+                                                    <label class="label label-danger">已售完</label>
+                                                </span>
+                                                <% }else if (item.amount.small == 0){ %>
+                                                <span>
+                                                    <label class="label label-danger">小份售完</label>
+                                                </span>
+                                                <% }else if (item.amount.big == 0 ){ %>
+                                                <span>
+                                                    <label class="label label-danger">大份售完</label>
+                                                </span>
+                                                <% }else { %>
+                                                <% } %>
                                                 <strong><%- item.name %></strong>
                                                 <small class="s"> <%- item.price.small %> </small>
                                     <span>
@@ -283,7 +355,7 @@
                                                        name="amountSmall" value="0" readonly="readonly">
 
                                             </div>
-                                            <% }%>
+                                            <% } %>
                                             <% }); %>
                                         </div>
                                     </div>
@@ -292,8 +364,22 @@
                                     <div class="thumbnail">
                                         <div class="caption">
                                             <% items.forEach(function(item) { %>
-                                            <% if (item.type === '湯類'){%>
+                                            <% if (item.type === '湯類'){ %>
                                             <h3 class="h" style="padding-bottom: 0px;margin-bottom: 0px;">
+                                                <% if (item.amount.big == 0 && item.amount.small == 0){ %>
+                                                <span>
+                                                    <label class="label label-danger">已售完</label>
+                                                </span>
+                                                <% }else if (item.amount.small == 0){ %>
+                                                <span>
+                                                    <label class="label label-danger">小份售完</label>
+                                                </span>
+                                                <% }else if (item.amount.big == 0 ){ %>
+                                                <span>
+                                                    <label class="label label-danger">大份售完</label>
+                                                </span>
+                                                <% }else { %>
+                                                <% } %>
                                                 <strong><%- item.name %></strong>
                                                 <small class="s"> <%- item.price.small %> </small>
                                     <span>
@@ -325,7 +411,7 @@
                                                        name="amountSmall" value="0" readonly="readonly">
 
                                             </div>
-                                            <% }%>
+                                            <% } %>
                                             <% }); %>
                                         </div>
                                     </div>
@@ -334,8 +420,22 @@
                                     <div class="thumbnail">
                                         <div class="caption">
                                             <% items.forEach(function(item) { %>
-                                            <% if (item.type === '飲料'){%>
+                                            <% if (item.type === '飲料'){ %>
                                             <h3 class="h" style="padding-bottom: 0px;margin-bottom: 0px;">
+                                                <% if (item.amount.big == 0 && item.amount.small == 0){ %>
+                                                <span>
+                                                    <label class="label label-danger">已售完</label>
+                                                </span>
+                                                <% }else if (item.amount.small == 0){ %>
+                                                <span>
+                                                    <label class="label label-danger">小份售完</label>
+                                                </span>
+                                                <% }else if (item.amount.big == 0 ){ %>
+                                                <span>
+                                                    <label class="label label-danger">大份售完</label>
+                                                </span>
+                                                <% }else { %>
+                                                <% } %>
                                                 <strong><%- item.name %></strong>
                                                 <small class="s"> <%- item.price.small %> </small>
                                     <span>
@@ -367,7 +467,7 @@
                                                        name="amountSmall" value="0" readonly="readonly">
 
                                             </div>
-                                            <% }%>
+                                            <% } %>
                                             <% }); %>
                                         </div>
                                     </div>
@@ -376,7 +476,8 @@
                             </div>
 
                         </div>
-                        <button class="btn btn-default pull-right">ORDER</button>
+                        <button class="btn btn-success pull-right" id="orderBtn" type="button">ORDER</button>
+                        <a href="/" class="btn btn-primary">首頁</a>
                     </div>
                 </div>
             </form>
@@ -392,11 +493,21 @@
 
 
     $(function () {
+        var foo = $("#foo");
+        var orderBtn = $("#orderBtn");
+
         $(".spinner").TouchSpin({
             initval: 0,
             min: 0,
             postfix_extraclass: "btn btn-default"
 
+        });
+
+        orderBtn.click(function () {
+
+            $(this).attr('disabled', 'disabled');
+            $(this).text('正在送出中...');
+            foo.submit();
         });
 
     });

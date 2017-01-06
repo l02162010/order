@@ -45,12 +45,12 @@ router.post('/', function (req, res, next) {
             Item.findById(o.id).exec().then(function (item) {
                 if (o.amountBig > item.amount.big ) {
                     return reject({
-                        message: o.name + '剩下'+item.amount.big+'份'
+                        message: o.name +'(大)'+ '剩下'+item.amount.big+'份'
                     });
                 }
                 if (o.amountSmall > item.amount.small){
                     return reject({
-                        message: o.name + '剩下'+item.amount.small+'份'
+                        message: o.name +'(小)'+ '剩下'+item.amount.small+'份'
                     });
                 }
 
@@ -136,16 +136,23 @@ router.post('/confirm', function (req, res, next) {
 router.get('/success', function (req, res, next) {
     var orderId = req.cookies.orderId;
 
+    if (!orderId) {
+        return res.redirect('/order');
+    }
+
     models.Order.findById(orderId).populate('list.item').exec().then(function (order) {
 
         res.clearCookie('orderId', {});
         //res.send(order.list);
         res.render('success', {
             title: 'Success',
-            orders: order
+            orders: order,
+            moment: moment
+
         });
 
     });
 });
+
 
 module.exports = router;

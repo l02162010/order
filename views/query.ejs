@@ -20,13 +20,14 @@
                     </div>
                     <div class="panel-body">
                         <div class="input-group" id="orderDate">
-                            <input type="text" class="form-control" name="queryDate"/>
+                            <input type="text" class="form-control" name="queryDate" />
                             <span class="input-group-addon">
                                 <i class="glyphicon glyphicon-calendar"></i>
                             </span>
                         </div>
                     </div>
                     <div class="panel-footer clearfix">
+                        <a href="/" class="btn btn-info">首頁</a>
                         <button class="btn btn-default pull-right">Query</button>
                     </div>
                 </div>
@@ -112,6 +113,9 @@
             value: value,
             format: 'Y/m/d'
         });
+        $('.input-group .input-group-addon').click(function() {
+            dtpicker.datetimepicker('show');
+        })
     }
 
     $(document).ready(init);

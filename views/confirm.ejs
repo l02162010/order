@@ -28,7 +28,7 @@
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <form action="/order/confirm" method="post">
+            <form action="/order/confirm" id="foo" method="post">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         點餐明細
@@ -43,11 +43,11 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <%  var a,b = 0; %>
+                            <% var a, b = 0; %>
                             <% order.list.forEach(function (l) { %>
                             <tr>
                                 <td>
-                                    <%- l.item.name+'('+ l.item.price.big +'/'+l.item.price.small+')' %>
+                                    <%- l.item.name + '(' + l.item.price.big + '/' + l.item.price.small + ')' %>
                                 </td>
                                 <td>
                                     <% if (l.amount.big > 0) { %>
@@ -64,16 +64,17 @@
                                     <% if (l.amount.small > 0) { %>
                                     小份:<%- l.amount.small * l.item.price.small %>
                                     <% } %>
-                                    <p style="font-weight: bolder; color: #c7254e">小計:<%- (l.amount.big * l.item.price.big) + (l.amount.small * l.item.price.small) %>
+                                    <p style="font-weight: bolder; color: #c7254e">
+                                        小計:<%- (l.amount.big * l.item.price.big) + (l.amount.small * l.item.price.small) %>
                                     </p>
                                 </td>
 
-                                    <%  a = (l.amount.big * l.item.price.big) + (l.amount.small * l.item.price.small); %>
-                                    <% b += a%>
+                                <% a = (l.amount.big * l.item.price.big) + (l.amount.small * l.item.price.small); %>
+                                <% b += a %>
 
                             </tr>
                             <% }) %>
-                           <h3 style="font-weight: bolder"> 總計:<%- b %></h3>
+                            <h3 style="font-weight: bolder"> 總計:<%- b %></h3>
                             </tbody>
                         </table>
                     </div>
@@ -82,15 +83,21 @@
                     </div>
                     <div class="panel-body pb1">
                         <div class="input-group" id="datetime">
-                            <input type="text" class="form-control" name="datetime"/>
+                            <input type="text" class="form-control" name="datetime" />
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                         </div>
                     </div>
+                    <% if (b <= 0){ %>
                     <div class="panel-footer clearfix">
-                        <button  class="btn btn-success  btn-lg pull-right">確認</button>
+                        <a href="/" class="btn btn-danger  btn-lg pull-right">取消</a>
                     </div>
+                    <% }else { %>
+                    <div class="panel-footer clearfix">
+                        <button class="btn btn-success  btn-lg pull-right" id="confirmBtn">確認</button>
+                    </div>
+                    <% } %>
                 </div>
             </form>
         </div>
@@ -101,8 +108,8 @@
         open: {//開店時間
             h: 12, m: 0
         },
-        close: {//閉店時間
-            h: 20, m: 0
+        close: {//閉店時間//30分鐘是為了可以選到19:55
+            h: 20, m: 30
         },
         lastInterval: 30,
         firstInterval: 15
@@ -170,10 +177,27 @@
             minTime: first,
             maxTime: last,
             onSelectDate: onSelectDate
+
         });
 
         onSelectDate(value, datetime);
+
+        $('.input-group-addon').click(function () {
+            datetime.datetimepicker('show');
+        })
+
     }
+
+
+    var confirmBtn = $("#confirmBtn");
+    var foo = $("#foo");
+
+    confirmBtn.click(function () {
+
+        $(this).attr('disabled', 'disabled');
+        $(this).text('確認送出中...');
+        foo.submit();
+    });
 
     $(document).ready(init);
 </script>

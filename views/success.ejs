@@ -1,6 +1,25 @@
 <!DOCTYPE html>
 <html>
 <%- include partials/head.ejs %>
+<style>
+    body {
+        background-color: #feee7d;
+    }
+
+    .thumbnail {
+        background-color: #cff09e;
+    }
+
+    h2 {
+        color: #6C49B8;
+    }
+    h3{
+        color: #4F86C6;
+    }
+
+
+</style>
+
 <body>
 <div class="container">
     <div class="page-header">
@@ -17,81 +36,86 @@
         <div class="col-sm-12">
 
             <div class="panel-body">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <td>Item (Price)</td>
-                        <td>Amount</td>
-                        <td>Price</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <%  var a,b = 0; %>
-                    <% orders.list.forEach(function (l) { %>
-                    <tr>
-                        <td>
-                            <%- l.item.name+'('+ l.item.price.big +'/'+l.item.price.small+')' %>
-                        </td>
-                        <td>
-                            <% if (l.amount.big > 0) { %>
-                            大份:<%- l.amount.big %>
-                            <% } %>
-                            <% if (l.amount.small > 0) { %>
-                            小份:<%- l.amount.small %>
-                            <% } %>
-                        </td>
-                        <td>
-                            <% if (l.amount.big > 0) { %>
-                            大份:<%- l.amount.big * l.item.price.big %>
-                            <% } %>
-                            <% if (l.amount.small > 0) { %>
-                            小份:<%- l.amount.small * l.item.price.small %>
-                            <% } %>
-                            <p style="font-weight: bolder; color: #c7254e">小計:<%- (l.amount.big * l.item.price.big) + (l.amount.small * l.item.price.small) %>
-                            </p>
-                        </td>
+                <div class="thumbnail">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <td>Item (Price)</td>
+                            <td>Amount</td>
+                            <td>Price</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <% var a, b = 0;
+                        var times = 0; %>
 
-                        <%  a = (l.amount.big * l.item.price.big) + (l.amount.small * l.item.price.small); %>
-                        <% b += a%>
+                        <% orders.list.forEach(function (l) { %>
+                        <tr>
+                            <td>
+                                <%- l.item.name + '(' + l.item.price.big + '/' + l.item.price.small + ')' %>
+                            </td>
+                            <td>
+                                <% if (l.amount.big > 0) { %>
+                                大份:<%- l.amount.big %>
+                                <% } %>
+                                <% if (l.amount.small > 0) { %>
+                                小份:<%- l.amount.small %>
+                                <% } %>
+                            </td>
+                            <td>
+                                <% if (l.amount.big > 0) { %>
+                                大份:<%- l.amount.big * l.item.price.big %>
+                                <% } %>
+                                <% if (l.amount.small > 0) { %>
+                                小份:<%- l.amount.small * l.item.price.small %>
+                                <% } %>
+                                <p style="font-weight: bolder; color: #c7254e">
+                                    小計:<%- (l.amount.big * l.item.price.big) + (l.amount.small * l.item.price.small) %>
+                                </p>
+                            </td>
 
-                    </tr>
-                    <% }) %>
-                    <h3 style="font-weight: bolder"> 總計:<%- b %></h3>
-                    </tbody>
-                </table>
+                            <% a = (l.amount.big * l.item.price.big) + (l.amount.small * l.item.price.small); %>
+                            <% b += a %>
+
+                        </tr>
+                        <% }) %>
+                        <h2 style="font-weight: bolder"> 總計:<%- b %>元</h2><span>
+                        <h3>取餐時間:<%- moment(orders.datetime).format('YYYY/MM/DD HH:mm') %></h3></span>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-
         </div>
     </div>
     <div class="row">
         <div class="col-sm-12">
             <div id="duration">
-                <a href="/" class="btn bg-success">返回首頁</a>
+                <a href="/" class="btn btn-success">返回首頁</a>
                 <!--還有<span></span>秒，返回首頁-->
             </div>
         </div>
     </div>
 </div>
 <!--<script>-->
-    <!--var duration = 90;-->
+<!--var duration = 90;-->
 
-    <!--function countDown() {-->
-        <!--var span = $('#duration > span');-->
+<!--function countDown() {-->
+<!--var span = $('#duration > span');-->
 
-        <!--span.text(duration);-->
+<!--span.text(duration);-->
 
-        <!--duration&#45;&#45;;-->
+<!--duration&#45;&#45;;-->
 
-        <!--if (duration >= 0) {-->
-            <!--setTimeout(countDown, 1000);-->
-        <!--} else {-->
-            <!--location.href = '/';-->
-        <!--}-->
-    <!--}-->
+<!--if (duration >= 0) {-->
+<!--setTimeout(countDown, 1000);-->
+<!--} else {-->
+<!--location.href = '/';-->
+<!--}-->
+<!--}-->
 
-    <!--$(document).ready(function () {-->
-        <!--countDown();-->
-    <!--});-->
+<!--$(document).ready(function () {-->
+<!--countDown();-->
+<!--});-->
 <!--</script>-->
 </body>
 </html>
